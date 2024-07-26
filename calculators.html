@@ -151,6 +151,7 @@ $(document).ready(function() {
         }
     }
 
+
     function calculate() {
         var numYears = $("input:radio[name=years-radio]:checked").val();
         var selectedLoanType = loanType.val();
@@ -165,16 +166,30 @@ $(document).ready(function() {
         var LTV = 100 - downPaymentPercent;
         var pmiFactor;
 
-        if (LTV >= 95.01 && LTV <= 97.00) {
-            pmiFactor = 0.0099;
-        } else if (LTV >= 90.01 && LTV <= 95.00) {
-            pmiFactor = 0.0078;
-        } else if (LTV >= 85.01 && LTV <= 90.00) {
-            pmiFactor = 0.0055;
-        } else if (LTV >= 80.01 && LTV <= 85.00) {
-            pmiFactor = 0.0025;
+        if( numYears === 30 ){
+            if (LTV >= 95.01 && LTV <= 97.00) {
+                pmiFactor = 0.0099;
+            } else if (LTV >= 90.01 && LTV <= 95.00) {
+                pmiFactor = 0.0078;
+            } else if (LTV >= 85.01 && LTV <= 90.00) {
+                pmiFactor = 0.0055;
+            } else if (LTV >= 80.01 && LTV <= 85.00) {
+                pmiFactor = 0.0025;
+            } else {
+                pmiFactor = 0; // No PMI if LTV <= 80%
+            }
         } else {
-            pmiFactor = 0; // No PMI if LTV <= 80%
+            if (LTV >= 95.01 && LTV <= 97.00) {
+                pmiFactor = 0.0080;
+            } else if (LTV >= 90.01 && LTV <= 95.00) {
+                pmiFactor = 0.0056;
+            } else if (LTV >= 85.01 && LTV <= 90.00) {
+                pmiFactor = 0.0028;
+            } else if (LTV >= 80.01 && LTV <= 85.00) {
+                pmiFactor = 0.0021;
+            } else {
+                pmiFactor = 0; // No PMI if LTV <= 80%
+            }
         }
 
         var pmiMonthly = (principle * pmiFactor) / 12;
